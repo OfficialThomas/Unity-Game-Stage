@@ -5,11 +5,9 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
     public float _moveSpeed = 1;
-    public float _rotationSpeed = 1;
     public GameObject _bullet;
-    private Rigidbody _rigidbody;
-    private Camera _3rdPerson;
-    private Camera _1stPerson;
+    private CharacterController _characterController;
+    private Camera _currentCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -17,18 +15,9 @@ public class PlayerBehavior : MonoBehaviour
         //https://docs.unity3d.com/ScriptReference/Cursor-lockState.html
         Cursor.lockState = CursorLockMode.Confined;
 
-        _rigidbody = GetComponent<Rigidbody>();
+        _characterController = GetComponent<CharacterController>();
 
-        _3rdPerson = GameObject.Find("3rd Person").GetComponent<Camera>();
-        _1stPerson = GameObject.Find("1st Person").GetComponent<Camera>();
-        _3rdPerson.enabled = true;
-        _1stPerson.enabled = false;
-    }
-
-    private void FixedUpdate()
-    {
-        Vector3 newPosition = transform.forward * Input.GetAxis("Vertical") * _moveSpeed * Time.deltaTime + transform.right * Input.GetAxis("Horizontal") * _moveSpeed * Time.deltaTime;
-        _rigidbody.AddForce(newPosition);
+        _currentCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -36,7 +25,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate(_bullet, transform.position + transform.forward*2 + transform.up*1, transform.rotation);
+            Instantiate(_bullet, transform.position + transform.forward*1.5f, transform.rotation);
         }
 
         if (Input.GetButton("Fire2"))
@@ -52,39 +41,17 @@ public class PlayerBehavior : MonoBehaviour
             }
         }
 
-        //https://docs.unity3d.com/Manual/MultipleCameras.html
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (_3rdPerson.enabled)
-            {
-                _3rdPerson.enabled = false;
-                _1stPerson.enabled = true;
-            }
-            else
-            {
-                _1stPerson.enabled = false;
-                _3rdPerson.enabled = true;
-            }
-        }
-    }
+        //rotate
+        Vector3 cameraDirection = _currentCamera.transform.forward;
+        cameraDirection.y = 0;
+        transform.LookAt(transform.position + cameraDirection);
 
-    void LateUpdate()
-    {
-        transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * _rotationSpeed * Time.deltaTime, 0));
-    }
-
-    public void ChangePOV()
-    {
-        if (_3rdPerson.enabled)
-        {
-            _3rdPerson.enabled = false;
-            _1stPerson.enabled = true;
-        }
-        else
-        {
-            _1stPerson.enabled = false;
-            _3rdPerson.enabled = true;
-        }
+        //movement
+        Vector3 movement = _currentCamera.transform.right * Input.GetAxis("Horizontal") + _currentCamera.transform.forward * Input.GetAxis("Vertical");
+        movement = Vector3.ClampMagnitude(movement, 1);
+        movement *= _moveSpeed * Time.deltaTime;
+        _characterController.SimpleMove(movement);
 
     }
+
 }
