@@ -1,34 +1,26 @@
-# Beetle Invasion
-CMPM 121 Assignment 2
+# Unity Map
+CMPM 121 Assignment 3
 
-1. Have a player character that is controllable via the keyboard.\
+1. An improved character controller.\
     Status: Complete.\
-    Player character is able to move using wasd and change direction using the mouse.
+    Player character is able to move using wasd and change the camera direction to move freely. The player is also able to shoot with the left mouse button.
+	
+2. A designed level.\
+    Status: Complete.\
+    The area contains buildings and follows 4 different level design tips. These include:
+	- Utilize Landmarks: I decided to have fun building a giant tower. The tower gives the player a point of reference and sticks out compared to all of the shorter objects in the scene.
+	- Place Kodak Picture Spots: Ultilizing the tower, I thought it would be cool to have a nice sunset. This view gives the player a sense of a larger world without having to design any of it.
+	- Make use of breadcrumbs: Placing coins around the tower tells the player that they have more than one place they can go for some kind of reward. These coins are also used to guide the player to the top platform of the tower.
+	- Use lighting intentionally: I made sure to have a sunset to have the scene be a comfortable dark. Using this, I was able to emphasize the lighting inside of the houses, making players want to explore into these spaces.
 
-2. Have a navigable space that the player can't clip through.\
+3. Baked and realtime lights.\
     Status: Complete.\
-    Player is surrounded by gates that make it impossible to leave the area.
+    Lighting inside of the houses are only baked lights. The directional light is using the mixed setting, being dynamic for the player, enemies and collectables, and baked for the enviroment.
 
-3. Have collectable objects that destroy on pickup and modify a UI Element that reacts to the number that you've picked up.\
+4. Use a NavMeshAgent.\
     Status: Complete.\
-    Collectable coins are available in the play area. These coins disapear when collected and change the score in the UI.
-
-4. Have both a 3rd and 1st Person Camera follow the player.\
-    Status: Complete.\
-    Player can swap between 1st and 3rd person using a ui button on the screen.
+    Enemy character is present in the game and will approach player if close enough.
 	
-5. Allow the player to "shoot" in two ways. Way 1: Instatiating a projectile.\
-	Status: Complete.\
-	Player can use the left mouse button to shoot glowing disks.
-	
-6. Allow the player to "shoot" in two ways. Way 2: Raycast.\
-	Status: Complete.\
-	Player can use the right mouse button to raycast, allowing them to make some walls disapear.
-	
-7. Add an "enemy" that reacts in some way to being "shot".\
-	Status: Complete.\
-	Player can shoot spider with the glowing disks to kill them.
-	
-8. Unique Addition (Extra Credit) Make the enemy move.
-	Status: Complete.\
-	Spiders move back and forth on a path between two points.
+5. A unique manipulation.\
+	Status: Incomplete.\
+	No unique manipulation this week.
