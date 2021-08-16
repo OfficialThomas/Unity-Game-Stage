@@ -1,50 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public GameObject _positionOne;
-    public GameObject _positionTwo;
-    public float _speed = 1;
-    public float _maxDifference = 0.1f;
-    private bool _forward = true;
+    private NavMeshAgent _agent;
+    private GameObject _player;
+    public float _radius = 1;
+    private Vector3 _startPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = _positionOne.transform.position;
+        _agent = GetComponent<NavMeshAgent>();
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _startPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_forward)
+        Vector3 vectorToTarget = _player.transform.position - transform.position;
+        float distanceToTarget = vectorToTarget.magnitude;
+        if (distanceToTarget <= _radius)
         {
-            transform.LookAt(_positionTwo.transform);
-
-            Vector3 current = transform.position;
-            Vector3 final = _positionTwo.transform.position;
-            transform.position = Vector3.Lerp(current, final, _speed * Time.deltaTime);
-
-            if (Mathf.Abs(current.x - final.x) <= _maxDifference && Mathf.Abs(current.y - final.y) <= _maxDifference && Mathf.Abs(current.z - final.z) <= _maxDifference)
-            {
-                _forward = false;
-            }
+            _agent.SetDestination(_player.transform.position);
         }
         else
         {
-            transform.LookAt(_positionOne.transform);
-
-            Vector3 current = transform.position;
-            Vector3 final = _positionOne.transform.position;
-            transform.position = Vector3.Lerp(current, final, _speed * Time.deltaTime);
-
-            if (Mathf.Abs(current.x - final.x) <= _maxDifference && Mathf.Abs(current.y - final.y) <= _maxDifference && Mathf.Abs(current.z - final.z) <= _maxDifference)
-            {
-                _forward = true;
-            }
+            _agent.SetDestination(_startPosition);
         }
-        
+
     }
 }
